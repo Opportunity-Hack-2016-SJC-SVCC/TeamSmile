@@ -7,40 +7,34 @@ import json
 class InterpreterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Interpreter
-        fields = ("time", "number", "locations", "protocol", "protocol", "subservices", "service")
+        fields = ("time", "number", "locations", "protocol", "subservices", "service")
 
     def send_reply(self, client_type, client_id, message):
         # Using Telegram API?, send result to a client.
-        print(message)
         if client_type.lower() == 'telegram':
             print('telegram', client_id, message)
             send_request = 'http://localhost:5000/telegram_center/post'  # TODO Hardcoded!
-            requests.post(send_request, data=json.dumps({'userid': client_id, 'message': message}))
-            # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
+            requests.post(send_request, data=json.dumps({'userid': client_id, 'message': message}),
+                          headers={'content-type': 'application/json'})
         elif client_type.lower() == 'sms':
             print('sms', client_id, message)
             send_request = 'http://139.59.210.181:8081/sms'  # TODO Hardcoded!
-            requests.post(send_request, data=json.dumps({'number': client_id, 'message': message}))
-            # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
+            requests.post(send_request, data=json.dumps({'number': client_id, 'message': message}),
+                          headers={'content-type': 'application/json'})
 
     def create(self, validated_data):
-        print(self)
-        print(self.data)
         print("From wit.ai:", validated_data)
-        # print(self.req.data)
-        # print(self.data)
-        # validated_data = {'protocol':'SMS', 'number':'num1', 'time':'time1', 'service':'sv1', 'subservice':'subsv1', 'locations':['sanjose']}
-        # if not self.data:
-        #     print('Error: POST-data is empty')
-        #     return True
+        if not validated_data:
+            print('Error: POST-data is empty')
+            return super(InterpreterSerializer, self).create(validated_data)
         client_type = validated_data.get('protocol')
         client_id = validated_data.get('number')
         time = validated_data.get('time')
         service = validated_data.get('service')
-        subservice = validated_data.get('subservice')
+        subservices = validated_data.get('subservices')
         locations = validated_data.get('locations')
         print(locations)
-        if not (client_type and client_id and time and service and subservice):
+        if not (client_type and client_id and time and service and subservices):
             print('Error: POST-data-value is empty')
             return super(InterpreterSerializer, self).create(validated_data)
 
