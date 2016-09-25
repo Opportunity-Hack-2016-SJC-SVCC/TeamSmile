@@ -1,7 +1,7 @@
 # TeamSmile
 
-# Inspriation
-This project is made to help Food Rescue Forum to addressed continued hunger in Silicon Valley.
+# Inspiration
+This project is made to help Food Rescue Forum to address continued hunger in Silicon Valley.
 
 This system aims to distribute information of free food offering toward among needed people.
 
@@ -10,7 +10,7 @@ We provided three interfaces for people to access to the information.
 
 1. Android Mobile App
 
-2. SMS Chatting Box
+2. SMS Bot
 
 3. Telegram Bot
 
