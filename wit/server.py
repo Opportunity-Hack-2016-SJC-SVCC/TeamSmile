@@ -22,7 +22,8 @@ def getEntityIfExists(entities, eName):
 
 #subservice and time are lists
 def sendRequest(protocol,number, service, subservice, location, time):
-  r = requests.post("http://139.59.210.181:8888/api/ask/", data={"time": str(time), "number": str(number), "locations": [str(location)], "protocol": str(protocol), "subservices": str(subservice), "service": str(service)})
+  r = requests.post("http://139.59.210.181:8888/api/ask/", headers={'content-type': 'application/json'}, data=json.dumps({"time": "".join(map(lambda x: str(x),time)), "number": str(number), "locations": str(location), "protocol": str(protocol), "subservices": "".join(map(lambda x: str(x), subservice)), "service": str(service)}))
+#  r = requests.post("http://139.59.210.181:8888/api/ask/", headers={'content-type': 'application/json'}, data=json.dumps({"time": map(lambda x: str(x),time), "number": str(number), "locations": str(location), "protocol": str(protocol), "subservices": map(lambda x: str(x), subservice), "service": str(service)}))
 
 class interpret_request:
     def POST(self):
