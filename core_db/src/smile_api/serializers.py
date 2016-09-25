@@ -11,7 +11,7 @@ class WorkingHoursSerializer(serializers.ModelSerializer):
 
 class FoodSourceSerializer(serializers.ModelSerializer):
     working_hours = WorkingHoursSerializer(many=True, read_only=True)
-    is_opened_now = serializers.BooleanField()
+    is_opened_now = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = FoodSource

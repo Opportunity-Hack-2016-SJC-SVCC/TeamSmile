@@ -44,7 +44,6 @@ class FoodSource(models.Model):
         result = None
         now = datetime.datetime.now()
         seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
-        print(seconds_since_midnight)
         for working_hour in self.working_hours.all():
             if working_hour.start_time < seconds_since_midnight < working_hour.end_time:
                 result = working_hour.end_time - seconds_since_midnight
