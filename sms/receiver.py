@@ -10,6 +10,7 @@ def receive_message():
   body = request.form['Body']
   body.replace(" ", "%20")
   urlforGet = "http://139.59.210.181:8080/food/" + "sms/" + number + "/" + body
+  print urlforGet
   urllib2.urlopen(urlforGet).read()
 
   resp = twilio.twiml.Response()

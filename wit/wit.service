@@ -1,5 +1,5 @@
 [Unit]
-Description=SMS Receiver
+Description=Wit interfacer
 After=network.target
 
 [Service]
