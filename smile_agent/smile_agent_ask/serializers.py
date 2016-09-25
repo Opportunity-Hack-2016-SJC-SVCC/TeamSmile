@@ -7,7 +7,7 @@ import json
 class InterpreterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Interpreter
-        fields = ('id', 'hoge', )
+        fields = ("time", "number", "locations", "protocol", "protocol", "subservices", "service")
 
     def send_reply(self, client_type, client_id, message):
         # Using Telegram API?, send result to a client.
@@ -24,6 +24,8 @@ class InterpreterSerializer(serializers.ModelSerializer):
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
 
     def create(self, validated_data):
+        print(self)
+        print(self.data)
         print("From wit.ai:", validated_data)
         # print(self.req.data)
         # print(self.data)
@@ -44,27 +46,27 @@ class InterpreterSerializer(serializers.ModelSerializer):
 
         if locations:  # Send client about the near free food place
             print('OK')
-            for location in locations:
-                # Google Geocode API example
-                # http://maps.google.com/maps/api/geocode/json?address=sanjose&sensor=false
-                geo = requests.get('http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false' % location)
-                json_geo = json.loads(geo.text)
-                if json_geo['status'] != 'ZERO_RESULTS':
-                    json_location = json_geo['results'][0]['geometry']['location']
-                    lat = json_location['lat']
-                    lng = json_location['lng']
-                    print(lat, lng)
-                    db_request = 'http://139.59.212.15:3045/api/food_source/?latitude=%s&longitude=%s' % (lat, lng)
-                    print(db_request)
-                    db_result = requests.get(db_request)
-                    res = db_result.content.decode("utf-8")
-                    json_res = json.loads(res)
-                    r = json_res['0']
-                    self.send_reply(client_type, client_id, ("Hello! The nearest free food is in %s miles(?). "
-                                                             "There is %s. Open a further %s hours." % (r['distance'], r['address'], r['how_long_would_be_opened_in_string'])))
-                else:
-                    print('OK-NG')
-                    self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % location)
+            # for location in locations:
+            # Google Geocode API example
+            # http://maps.google.com/maps/api/geocode/json?address=sanjose&sensor=false
+            geo = requests.get('http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false' % locations)
+            json_geo = json.loads(geo.text)
+            if json_geo['status'] != 'ZERO_RESULTS':
+                json_location = json_geo['results'][0]['geometry']['location']
+                lat = json_location['lat']
+                lng = json_location['lng']
+                print(lat, lng)
+                db_request = 'http://139.59.212.15:3045/api/food_source/?latitude=%s&longitude=%s' % (lat, lng)
+                print(db_request)
+                db_result = requests.get(db_request)
+                res = db_result.content.decode("utf-8")
+                json_res = json.loads(res)
+                r = json_res['0']
+                self.send_reply(client_type, client_id, ("Hello! The nearest free food is in %s miles(?). "
+                                                         "There is %s. Open a further %s hours." % (r['distance'], r['address'], r['how_long_would_be_opened_in_string'])))
+            else:
+                print('OK-NG')
+                self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % locations)
 
         else:  # No location info! => Ask client again
             print('NG')
