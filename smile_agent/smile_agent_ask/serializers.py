@@ -78,12 +78,12 @@ class InterpreterSerializer(serializers.ModelSerializer):
                         time_lib.sleep(1)
                 if flag != 1:
                     self.send_reply(client_type, client_id, "Unfortunately I cannot find any nearby place for you.");
-            elif service == "thanks":
-                self.send_reply(client_type, client_id, "You are welcome! :) Feel free to ask me at any moment.")
             else:
                 print('OK-NG')
                 self.send_reply(client_type, client_id, "I'm sorry, I cannot understant where you are, could you please be more specific? (You said [%s])" % locations)
 
+        elif "thank" in service:
+            self.send_reply(client_type, client_id, "You are welcome! :) Feel free to ask me at any moment.")  
         else:  # No location info! => Ask client again
             print('NG')
             self.send_reply(client_type, client_id, "Hello!, my name is SMileS and I'm here to help you to find some food nearby.\n I'm not very intelligent but I'll try my best :) \n You can ask me for food. I just need to know your location.\n For example: \"I'm in Downtown San Jose and I wish to have some food.\" or \"Where can I get food near 3200 Zanker Road San Jose?\" ")
