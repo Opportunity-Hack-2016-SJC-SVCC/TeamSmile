@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect
 import twilio.twiml
-import urllib2
+import requests
+import json
 
 app = Flask(__name__)
 
@@ -8,11 +9,9 @@ app = Flask(__name__)
 def receive_message():
   number = request.form['From']
   body = request.form['Body']
-  body.replace(" ", "%20")
-  urlforGet = "http://139.59.210.181:8080/food/" + "sms/" + number + "/" + body
-  print urlforGet
-  urllib2.urlopen(urlforGet).read()
-
+  urlforPost = "http://139.59.210.181:8080/food"
+  data = json.dumps({'protocol': 'sms', 'number': number, 'message': body})
+  requests.post(urlforPost, data)
   resp = twilio.twiml.Response()
   return str(resp)
 
