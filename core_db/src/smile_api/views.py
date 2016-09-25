@@ -6,4 +6,4 @@ from smile_api.serializers import FoodSourceSerializer
 
 class FoodSourceVeiwSet(viewsets.ReadOnlyModelViewSet):
     queryset = FoodSource.objects.all()
-    serializer_class = FoodSourceSerializergit
+    serializer_class = FoodSourceSerializer
