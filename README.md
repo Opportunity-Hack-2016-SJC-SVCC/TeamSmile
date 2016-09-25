@@ -7,8 +7,11 @@ This system aims to distribute information of free food offering toward among ne
 
 # What it does
 We provided three interfaces for people to access to the information.
+
 1. Android Mobile App
+
 2. SMS Chatting Box
+
 3. Telegram Bot
 
 
