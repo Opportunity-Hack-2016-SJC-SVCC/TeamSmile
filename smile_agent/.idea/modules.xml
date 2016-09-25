@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/smile_agent/.idea/smile_agent.iml" filepath="$USER_HOME$/smile_agent/.idea/smile_agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/smile_agent.iml" filepath="$PROJECT_DIR$/.idea/smile_agent.iml" />
     </modules>
   </component>
 </project>
