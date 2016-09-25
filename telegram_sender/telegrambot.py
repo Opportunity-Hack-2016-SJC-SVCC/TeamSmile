@@ -6,7 +6,7 @@ import json
 """
 Setup the bot
 """
-BOTTOKEN = "263599717:AAFa4x7qcjqCqynC07es041VbSCGfXy73xM"
+BOTTOKEN = ""
 bot = telebot.TeleBot(BOTTOKEN)
 
 """
