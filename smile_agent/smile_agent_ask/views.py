@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.response import Response
 
 from .models import Interpreter
@@ -45,3 +46,13 @@ class InterpreterViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return Response({'answer': self.func()})
 
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            print(request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except Exception as e:
+            print(e)

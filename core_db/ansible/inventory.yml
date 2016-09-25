@@ -1,0 +1,8 @@
+---
+- name: Install Smile
+  hosts: smile
+  remote_user: root
+
+  roles:
+    - docker
+    - smile
