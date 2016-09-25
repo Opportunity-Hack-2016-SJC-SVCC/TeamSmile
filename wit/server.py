@@ -47,6 +47,8 @@ class interpret_request:
         sendRequest(protocol,number,'food', mealkind, location, time)
       elif 'hygiene' in intent:
         sendRequest(protocol,number,'hygiene', hygienekind, location, time)
+      elif 'thanks' in intent:
+        sendRequest(protocol,number,'thanks', [], '', [])
       else:
         sendRequest(protocol,number,'hello', [], '', [])
         
