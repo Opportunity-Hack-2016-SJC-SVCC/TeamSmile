@@ -3,7 +3,6 @@ import datetime
 from django.contrib.gis.db import models
 
 
-
 class FoodSource(models.Model):
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
@@ -68,9 +67,6 @@ class FoodSource(models.Model):
     @property
     def is_opened_now(self):
         now = datetime.datetime.now()
-        print(now)
-        print(now.replace(hour=0, minute=0, second=0, microsecond=0))
-        print(now - now.replace(hour=0, minute=0, second=0, microsecond=0))
         seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
         opened = False
 
