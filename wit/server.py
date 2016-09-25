@@ -2,9 +2,10 @@ import web
 import sys
 from wit import Wit
 import requests
+import json
 
 urls = (
-    '/food/(.*)/(.*)/(.*)', 'interpret_request'
+    '/food', 'interpret_request'
 )
 
 actions = {
@@ -21,10 +22,14 @@ def getEntityIfExists(entities, eName):
 
 #subservice and time are lists
 def sendRequest(protocol,number, service, subservice, location, time):
-  r = requests.post("http://139.59.210.181:8888/api/ask/", data={'time': time, 'number': number, 'location': location, 'protocol': protocol, 'subservices': subservice, 'service': service})
+  r = requests.post("http://139.59.210.181:8888/api/ask/", data={'time': time, 'number': number, 'locations': [location], 'protocol': protocol, 'subservices': subservice, 'service': service})
 
 class interpret_request:
-    def GET(self, protocol, number, message):
+    def POST(self):
+      data = json.loads(web.data())
+      protocol = data['protocol']
+      number = data['number']
+      message = data['message']
       resp = client.message(message)
       print resp
       entities = resp['entities'] #should we consider confidence?
