@@ -1,0 +1,9 @@
+[Unit]
+Description=Smile
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python /home/food/TeamSmile/smile_agent/manage.py runserver 0.0.0.0:8888
+
+[Install]
+WantedBy=multi-user.target
