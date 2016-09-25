@@ -11,7 +11,7 @@ class InterpreterSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         print(validated_data)
-        # validated_data = {'hoge':'mm'}
+        # validated_data = {'locations':['sanjose']}
         locations = validated_data['locations']
         print(locations)
         if locations:  # Send client about the near free food place
@@ -26,8 +26,15 @@ class InterpreterSerializer(serializers.Serializer):
                     lat = json_location['lat']
                     lng = json_location['lng']
                     print(lat, lng)
-            # db_request = 'http://139.59.212.15:3045/api/food_source/'
-            # db_result = requests.get(db_request)
+                    db_request = 'http://139.59.212.15:3045/api/food_source/?latitude=%s&longitude=%s' % (lat, lng)
+                    print(db_request)
+                    db_result = requests.get(db_request)
+                    print(db_result.content)
+                else:
+                    print('OK-NG')
+                    # Using Telegram API, send result to a client(Please send place
+
+
             # Using Telegram API, send result to a client.
         else:  # No location info! => Ask client again
             print('NG')
