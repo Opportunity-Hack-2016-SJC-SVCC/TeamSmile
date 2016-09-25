@@ -25,7 +25,7 @@ class InterpreterSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         print(validated_data)
-        validated_data = {'protocol':'SMS', 'number':'num1', 'time':'time1', 'service':'sv1', 'subservice':'subsv1', 'locations':['sanjose']}
+        # validated_data = {'protocol':'SMS', 'number':'num1', 'time':'time1', 'service':'sv1', 'subservice':'subsv1', 'locations':['sanjose']}
         if not validated_data:
             print('Error: POST-data is empty')
             return True
