@@ -1,7 +1,7 @@
 # TeamSmile
 
 # Inspriation
-This project is made to help Food Rescue Forum to addressed continued in Silicon Valley.
+This project is made to help Food Rescue Forum to addressed continued hunger in Silicon Valley.
 
 This system aims to distribute information of free food offering toward among needed people.
 
