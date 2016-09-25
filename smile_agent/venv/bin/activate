@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelavent variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/kosmori/smile_interpreter/venv"
+VIRTUAL_ENV="/Users/kosmori/TeamSmile/smile_agent/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

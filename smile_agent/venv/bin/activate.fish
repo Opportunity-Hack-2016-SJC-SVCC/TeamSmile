@@ -32,7 +32,7 @@ end
 # unset irrelavent variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/kosmori/smile_interpreter/venv"
+set -gx VIRTUAL_ENV "/Users/kosmori/TeamSmile/smile_agent/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

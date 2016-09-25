@@ -1,4 +1,4 @@
-#!/Users/kosmori/smile_interpreter/venv/bin/python3
+#!/Users/kosmori/TeamSmile/smile_agent/venv/bin/python3
 from django.core import management
 
 if __name__ == "__main__":
