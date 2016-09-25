@@ -16,23 +16,24 @@ class InterpreterViewSet(viewsets.ModelViewSet):
     serializer_class = InterpreterSerializer
 
     def func(self):
-        # Google Geocode API example
-        # http://maps.google.com/maps/api/geocode/json?address=sanjose&sensor=false
-        geo = requests.get('http://maps.google.com/maps/api/geocode/json?address=sanjose&sensor=false')
-        geojson = json2.loads(geo.text)
-        location = geojson['results'][0]['geometry']['location']
-        lat = location['lat']
-        lng = location['lng']
-        print(lat, lng)
-        # db_result = requests.get('http://maps.google.com/maps/api/geocode/json?address=sanjose&sensor=false')
-        # ret = json['status']
-        # ret = geojson['status']
-
-        # Using Telegram API, send result to a client.
-        if self.kwargs.get('location'):  # Send client about the near free food place
+        location = self.kwargs.get('location')
+        if location:  # Send client about the near free food place
             print('OK')
+            # Google Geocode API example
+            # http://maps.google.com/maps/api/geocode/json?address=sanjose&sensor=false
+            geo = requests.get('http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false' % location)
+            json_geo = json2.loads(geo.text)
+            json_location = json_geo['results'][0]['geometry']['location']
+            lat = json_location['lat']
+            lng = json_location['lng']
+
+            db_request = 'http://139.59.212.15:3045/api/food_source/'
+            db_result = requests.get(db_request)
+            print(lat, lng)
+            # Using Telegram API, send result to a client.
         else:  # No location info! => Ask client again
             print('NG')
+            # Using Telegram API, send result to a client.
 
         # ret = 'mokemoke'
         ret = self.kwargs.get('location')
