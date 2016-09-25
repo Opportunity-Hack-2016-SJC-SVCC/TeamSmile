@@ -34,6 +34,15 @@ class InterpreterSerializer(serializers.ModelSerializer):
         subservices = validated_data.get('subservices')
         locations = validated_data.get('locations')
         print(locations)
+        #  my json mode
+        # d = json.loads(validated_data['json_text'])
+        # client_type = d.get('protocol')
+        # client_id = d.get('number')
+        # time = d.get('time')
+        # service = d.get('service')
+        # subservices = d.get('subservices')
+        # locations = d.get('locations')
+
         if not (client_type and client_id and time and service and subservices):
             print('Error: POST-data-value is empty')
             return super(InterpreterSerializer, self).create(validated_data)
@@ -43,7 +52,7 @@ class InterpreterSerializer(serializers.ModelSerializer):
             # for location in locations:
             # Google Geocode API example
             # http://maps.google.com/maps/api/geocode/json?address=sanjose&sensor=false
-            geo = requests.get('http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false' % locations)
+            geo = requests.get('http://maps.google.com/maps/api/geocode/json?address=sanjose %s&sensor=false' % locations)
             json_geo = json.loads(geo.text)
             if json_geo['status'] != 'ZERO_RESULTS':
                 json_location = json_geo['results'][0]['geometry']['location']
@@ -56,8 +65,10 @@ class InterpreterSerializer(serializers.ModelSerializer):
                 res = db_result.content.decode("utf-8")
                 json_res = json.loads(res)
                 r = json_res['0']
-                self.send_reply(client_type, client_id, ("Hello! The nearest free food is in %s miles(?). "
-                                                         "There is %s. Open a further %s hours." % (r['distance'], r['address'], r['how_long_would_be_opened_in_string'])))
+                self.send_reply(client_type, client_id, "Hello!");
+                self.send_reply(client_type, client_id, "The nearest free food is in %s miles." % round(r['distance'], 2))
+                self.send_reply(client_type, client_id, "There is %s." % r['address'])
+                self.send_reply(client_type, client_id, "Open a further %s hours. (%s)", (r['how_long_would_be_opened_in_string'], r['time']))
             else:
                 print('OK-NG')
                 self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % locations)
