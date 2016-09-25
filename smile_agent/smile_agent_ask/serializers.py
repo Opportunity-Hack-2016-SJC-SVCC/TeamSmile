@@ -14,12 +14,12 @@ class InterpreterSerializer(serializers.Serializer):
         print(message)
         if client_type.lower() == 'telegram':
             print('telegram', client_id, message)
-            send_request = 'http://localhost:5000/telegram_center/post'  # TODO
+            send_request = 'http://localhost:5000/telegram_center/post'  # TODO Hardcoded!
             requests.post(send_request, data=json.dumps({'userid': client_id, 'message': message}))
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
         elif client_type.lower() == 'sms':
             print('sms', client_id, message)
-            send_request = 'http://139.59.210.181:8081/sms'  # TODO
+            send_request = 'http://139.59.210.181:8081/sms'  # TODO Hardcoded!
             requests.post(send_request, data=json.dumps({'number': client_id, 'message': message}))
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
 
