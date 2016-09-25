@@ -19,8 +19,8 @@ class interpret_request:
       message = data['message']
 #      message2 = client.messages.create(to=number, from_=str("+1870498575"),
       message2 = client.messages.create(to=number, messaging_service_sid="MG2bffad310a42593343e6dc64ba226cc1",
-                                 body=message)
-      message3 = client.messages.create(to=number, messaging_service_sid="MG2bffad310a42593343e6dc64ba226cc1", body="Thanks for Contacting us. Feel free to ask us anyti				 me.")      
+                                 body=message + "Thanks for Contacting. Feel free to ask us anytime.")
+         
     
 if __name__ == "__main__":
     app.run()
