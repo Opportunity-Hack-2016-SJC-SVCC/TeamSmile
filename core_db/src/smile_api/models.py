@@ -3,6 +3,7 @@ import datetime
 from django.contrib.gis.db import models
 
 
+
 class FoodSource(models.Model):
     name = models.TextField()
     description = models.TextField(blank=True, null=True)
@@ -67,11 +68,27 @@ class FoodSource(models.Model):
     @property
     def is_opened_now(self):
         now = datetime.datetime.now()
+        print(now)
+        print(now.replace(hour=0, minute=0, second=0, microsecond=0))
+        print(now - now.replace(hour=0, minute=0, second=0, microsecond=0))
         seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
         opened = False
+
+        week_days = [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday'
+        ]
+
         for working_hour in self.working_hours.all():
+            print(seconds_since_midnight)
             if working_hour.start_time < seconds_since_midnight < working_hour.end_time:
-                opened = True
+                if week_days[datetime.datetime.now().date().weekday()] == working_hour.day:
+                    opened = True
         return opened
 
 
@@ -106,23 +123,25 @@ class WorkingHours(models.Model):
     @staticmethod
     def seconds_to_string(seconds, am_pm=True):
         datetime_object = datetime.datetime(
-                year=2000, month=1, day=1, hour=0, minute=0, second=0
-            ) + datetime.timedelta(
-                seconds=seconds
-            )
+            year=2000, month=1, day=1, hour=0, minute=0, second=0
+        ) + datetime.timedelta(
+            seconds=seconds
+        )
+
+        time_format = ""
 
         if am_pm:
-            format = "%I"
+            time_format += "%I"
         else:
-            format = "%H"
+            time_format += "%H"
 
         if datetime_object.minute != 0:
-            format += ":%M"
+            time_format += ":%M"
 
         if am_pm:
-            format += "%p"
+            time_format += "%p"
 
-        string = datetime_object.strftime(format)
+        string = datetime_object.strftime(time_format)
 
         return string.lower()
 
