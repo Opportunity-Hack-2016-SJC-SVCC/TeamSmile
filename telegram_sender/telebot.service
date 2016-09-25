@@ -1,0 +1,9 @@
+[Unit]
+Description=Telegram Bot
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python /home/food/TeamSmile/telegram_sender/telegrambot.py
+
+[Install]
+WantedBy=multi-user.target

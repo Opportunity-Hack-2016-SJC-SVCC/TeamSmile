@@ -21,4 +21,4 @@ def create_task():
   return jsonify({'msg': msg}), 201
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run(port=5001)

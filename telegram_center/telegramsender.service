@@ -1,0 +1,10 @@
+[Unit]
+Description=SMS Receiver
+After=network.target
+
+[Service]
+Environment=PYTHONIOENCODING=utf-8
+ExecStart=/usr/bin/python /home/food/TeamSmile/telegram_center/FlaskApp/app.py 5001
+
+[Install]
+WantedBy=multi-user.target
