@@ -47,9 +47,11 @@ class InterpreterViewSet(viewsets.ModelViewSet):
         return Response({'answer': self.func()})
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        print(123)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except Exception as e:
+            print(e)
