@@ -5,7 +5,7 @@ import telebot
 
 app = Flask(__name__)
 
-BOTTOKEN = "263599717:AAFa4x7qcjqCqynC07es041VbSCGfXy73xM"
+BOTTOKEN = ""
 bot = telebot.TeleBot(BOTTOKEN)
 
 @app.route('/telegram_center/post', methods=['POST'])
