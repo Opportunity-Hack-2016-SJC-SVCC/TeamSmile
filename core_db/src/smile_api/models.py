@@ -39,6 +39,42 @@ class FoodSource(models.Model):
         else:
             return None
 
+    @property
+    def how_long_would_be_opened_in_seconds(self):
+        result = None
+        now = datetime.datetime.now()
+        seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
+        print(seconds_since_midnight)
+        for working_hour in self.working_hours.all():
+            if working_hour.start_time < seconds_since_midnight < working_hour.end_time:
+                result = working_hour.end_time - seconds_since_midnight
+
+        return result
+
+    @property
+    def how_long_would_be_opened_in_hours(self):
+        if self.how_long_would_be_opened_in_seconds is not None:
+            return int(round(self.how_long_would_be_opened_in_seconds / 3600))
+        else:
+            return None
+
+    @property
+    def how_long_would_be_opened_in_string(self):
+        if self.how_long_would_be_opened_in_seconds is not None:
+            return WorkingHours.seconds_to_string(self.how_long_would_be_opened_in_seconds, am_pm=False)
+        else:
+            return None
+
+    @property
+    def is_opened_now(self):
+        now = datetime.datetime.now()
+        seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
+        opened = False
+        for working_hour in self.working_hours.all():
+            if working_hour.start_time < seconds_since_midnight < working_hour.end_time:
+                opened = True
+        return opened
+
 
 class WorkingHours(models.Model):
     MONDAY = 'Monday'
@@ -69,19 +105,27 @@ class WorkingHours(models.Model):
     )
 
     @staticmethod
-    def seconds_to_string(seconds):
+    def seconds_to_string(seconds, am_pm=True):
         datetime_object = datetime.datetime(
                 year=2000, month=1, day=1, hour=0, minute=0, second=0
             ) + datetime.timedelta(
                 seconds=seconds
             )
 
-        if datetime_object.minute == 0:
-            string = datetime_object.strftime('%I %p')
+        if am_pm:
+            format = "%I"
         else:
-            string = datetime_object.strftime('%I:%M %p')
+            format = "%H"
 
-        return string.lower().replace(" ", "")
+        if datetime_object.minute != 0:
+            format += ":%M"
+
+        if am_pm:
+            format += "%p"
+
+        string = datetime_object.strftime(format)
+
+        return string.lower()
 
     @property
     def start_time_string(self):
