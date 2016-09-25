@@ -18,6 +18,7 @@
 - name: Run smile core container
   docker:
     image: smile_core
+    restart_policy: always
     state: restarted
     name: smile_core
     volumes:

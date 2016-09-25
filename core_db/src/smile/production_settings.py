@@ -1,4 +1,4 @@
-from smile.settings import *
+from smile.base_settings import *
 import os
 
 DEBUG = False

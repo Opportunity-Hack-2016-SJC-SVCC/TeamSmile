@@ -7,6 +7,8 @@ RUN apt-get update && \
 	ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib && \
 	ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib
 
+RUN apt-get install -y libsqlite3-dev libproj-dev libgeos-dev libspatialite-dev spatialite-bin
+
 COPY requirements_production.txt /opt/app/requirements_production.txt
 COPY requirements.txt /opt/app/requirements.txt
 
