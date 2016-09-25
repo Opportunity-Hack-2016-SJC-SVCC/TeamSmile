@@ -74,17 +74,17 @@ class InterpreterSerializer(serializers.ModelSerializer):
                     hlh = r['how_long_would_be_opened_in_string'];
                     if hlh != None:
                         flag = 1
-                        self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (by %s, Tel:%s)" % (round(r['distance'], 2), r['address'], hlh, r['name'], r['phone']))
+                        self.send_reply(client_type, client_id, "I just find a place near you that hopefully will meet your needs: It is  %s miles away at %s. It will be opened for the next %s hours. (The name of the place is %s and you can reach them at %s)" % (round(r['distance'], 2), r['address'], hlh, r['name'], r['phone']))
                         time_lib.sleep(1)
                 if flag != 1:
-                    self.send_reply(client_type, client_id, "Hello! The free food is not found nearby.");
+                    self.send_reply(client_type, client_id, "Unfortunately I cannot find any nearby place for you.");
             else:
                 print('OK-NG')
-                self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % locations)
+                self.send_reply(client_type, client_id, "I'm sorry, I cannot understant where you are, could you please be more specific? (You said [%s])" % locations)
 
         else:  # No location info! => Ask client again
             print('NG')
-            self.send_reply(client_type, client_id, "Please send message with address.")
+            self.send_reply(client_type, client_id, "Hello!, my name is SMileS and I'm here to help you to find some food nearby.\n I'm not very intelligent but I'll try my best :) \n You can ask me for food. I just need to know your location.\n For example: \"I'm in Downtown San Jose and I wish to have some food.\" or \"Where can I get food near Paypal's Office?\" ")
 
         return super(InterpreterSerializer, self).create(validated_data)  # No meaning
 
