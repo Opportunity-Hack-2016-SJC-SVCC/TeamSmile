@@ -43,7 +43,7 @@ class InterpreterSerializer(serializers.ModelSerializer):
         # subservices = d.get('subservices')
         # locations = d.get('locations')
 
-        if not (client_type and client_id and time and service and subservices):
+        if not (client_type and client_id and service):
             print('Error: POST-data-value is empty')
             return super(InterpreterSerializer, self).create(validated_data)
 
@@ -70,7 +70,10 @@ class InterpreterSerializer(serializers.ModelSerializer):
                 hlh = r['how_long_would_be_opened_in_string'];
                 print(hlh)
                 if hlh != None:
-                    self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (%s)" % (round(r['distance'], 2), r['address'], hlh, r['time']))
+                    if time:
+                        self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (%s)" % (round(r['distance'], 2), r['address'], hlh, r['time']))
+                    else:
+                        self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours." % (round(r['distance'], 2), r['address'], hlh))
                 else:
                     self.send_reply(client_type, client_id, "Hello! The nearest free food is already closed");
             else:
