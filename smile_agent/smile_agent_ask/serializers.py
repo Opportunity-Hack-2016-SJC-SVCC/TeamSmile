@@ -73,10 +73,7 @@ class InterpreterSerializer(serializers.ModelSerializer):
                     if hlh != None:
                         break
                 if hlh != None:
-                    if time:
-                        self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (%s)" % (round(r['distance'], 2), r['address'], hlh, r['time']))
-                    else:
-                        self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours." % (round(r['distance'], 2), r['address'], hlh))
+                    self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (by %s, Tel:%s)" % (round(r['distance'], 2), r['address'], hlh, r['name'], r['phone']))
                 else:
                     self.send_reply(client_type, client_id, "Hello! The free food is not found nearby.");
             else:
