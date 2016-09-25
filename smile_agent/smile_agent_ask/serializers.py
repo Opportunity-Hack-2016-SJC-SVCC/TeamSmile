@@ -20,7 +20,7 @@ class InterpreterSerializer(serializers.Serializer):
         elif client_type.lower() == 'sms':
             print('sms', client_id, message)
             send_request = 'http://139.59.210.181:8081/sms'  # TODO
-            requests.post(send_request, data=json.dumps({'userid': client_id, 'message': message}))
+            requests.post(send_request, data=json.dumps({'number': client_id, 'message': message}))
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
 
     def create(self, validated_data):
