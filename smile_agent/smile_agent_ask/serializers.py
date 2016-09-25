@@ -59,7 +59,7 @@ class InterpreterSerializer(serializers.Serializer):
                     json_res = json.loads(res)
                     r = json_res['0']
                     self.send_reply(client_type, client_id, ("Hello! The nearest free food is in %s miles(?). "
-                                                             "There is %s. Open a further %s hours." % (r['distance'], r['address'], "TIME")))
+                                                             "There is %s. Open a further %s hours." % (r['distance'], r['address'], r['how_long_would_be_opened_in_string'])))
                 else:
                     print('OK-NG')
                     self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % location)
