@@ -1,0 +1,12 @@
+[Unit]
+Description=Python Virtualenv service example
+After=network.target
+
+[Service]
+Environment=VIRTUAL_ENV=/home/food/TeamSmile/smile_agent/venv
+Environment=PATH=$VIRTUAL_ENV/bin:$PATH
+ExecStart=$VIRTUAL_ENV/bin/python manage.py runserver 0.0.0.0:8888
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,6 +1,7 @@
 import web
 import sys
 from wit import Wit
+import requests
 
 urls = (
     '/food/(.*)/(.*)/(.*)', 'interpret_request'
@@ -20,7 +21,7 @@ def getEntityIfExists(entities, eName):
 
 #subservice and time are lists
 def sendRequest(protocol,number, service, subservice, location, time):
-  print "STUB message from " + str(number) 
+  r = requests.post("http://139.59.210.181:8888/api/ask/", data={'time': time, 'number': number, 'location': location, 'protocol': protocol, 'subservices': subservice, 'service': service})
 
 class interpret_request:
     def GET(self, protocol, number, message):
