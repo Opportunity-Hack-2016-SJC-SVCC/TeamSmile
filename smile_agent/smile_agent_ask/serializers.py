@@ -4,10 +4,10 @@ import requests
 import json
 
 
-class InterpreterSerializer(serializers.Serializer):
+class InterpreterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = "hoge"
-        fields = ('id', 'text')
+        model = Interpreter
+        fields = ('id', 'hoge', )
 
     def send_reply(self, client_type, client_id, message):
         # Using Telegram API?, send result to a client.
@@ -24,11 +24,13 @@ class InterpreterSerializer(serializers.Serializer):
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
 
     def create(self, validated_data):
-        print(validated_data)
+        print("From wit.ai:", validated_data)
+        # print(self.req.data)
+        # print(self.data)
         # validated_data = {'protocol':'SMS', 'number':'num1', 'time':'time1', 'service':'sv1', 'subservice':'subsv1', 'locations':['sanjose']}
-        if not validated_data:
-            print('Error: POST-data is empty')
-            return True
+        # if not self.data:
+        #     print('Error: POST-data is empty')
+        #     return True
         client_type = validated_data.get('protocol')
         client_id = validated_data.get('number')
         time = validated_data.get('time')
@@ -38,7 +40,7 @@ class InterpreterSerializer(serializers.Serializer):
         print(locations)
         if not (client_type and client_id and time and service and subservice):
             print('Error: POST-data-value is empty')
-            return True
+            return super(InterpreterSerializer, self).create(validated_data)
 
         if locations:  # Send client about the near free food place
             print('OK')
@@ -68,7 +70,7 @@ class InterpreterSerializer(serializers.Serializer):
             print('NG')
             self.send_reply(client_type, client_id, "Please send message with address.")
 
-        return True  # No meaning
+        return super(InterpreterSerializer, self).create(validated_data)  # No meaning
 
 
 
