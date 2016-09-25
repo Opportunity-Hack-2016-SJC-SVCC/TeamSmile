@@ -3,6 +3,7 @@ Description=SMS Receiver
 After=network.target
 
 [Service]
+Environment=PYTHONIOENCODING=utf-8
 ExecStart=/usr/bin/python /home/food/TeamSmile/wit/server.py
 
 [Install]
