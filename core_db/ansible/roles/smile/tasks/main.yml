@@ -1,0 +1,27 @@
+---
+- file: path=/opt/smile_core state=directory
+
+- name: Upload chat sources
+  synchronize:
+    src: ../src
+    dest: /opt/smile_core
+    mode: push
+    rsync_opts:
+      - "--exclude=.git"
+
+- name: Smile container
+  docker_image:
+    force: yes
+    path: /opt/smile_core/src
+    name: smile_core
+
+- name: Run smile core container
+  docker:
+    image: smile_core
+    restart_policy: always
+    state: restarted
+    name: smile_core
+    volumes:
+    - "/opt/smile_core/db:/opt/app/db"
+    ports:
+    - "0.0.0.0:3045:80"
