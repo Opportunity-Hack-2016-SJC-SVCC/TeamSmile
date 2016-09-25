@@ -32,7 +32,7 @@ class interpret_request:
       hygienekind = getEntityIfExists(entities, 'hygieneStuff')
       time = getEntityIfExists(entities, 'datetime')
       location = getEntityIfExists(entities, 'location')
-      if location.size == 0:
+      if len(location) == 0:
         location = ['']
       location = location[0]
         

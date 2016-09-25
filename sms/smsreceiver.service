@@ -1,0 +1,9 @@
+[Unit]
+Description=SMS Receiver
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python /home/food/TeamSmile/sms/receiver.py
+
+[Install]
+WantedBy=multi-user.target
