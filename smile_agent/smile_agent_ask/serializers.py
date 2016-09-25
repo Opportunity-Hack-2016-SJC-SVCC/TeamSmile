@@ -64,18 +64,21 @@ class InterpreterSerializer(serializers.ModelSerializer):
                 db_result = requests.get(db_request)
                 res = db_result.content.decode("utf-8")
                 json_res = json.loads(res)
-                r = json_res['0']
-                print(r)
+                # r = json_res['0']
+                # print(r)
                 # self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is . Open a further  hours. ()" % (round(r['distance'], 2)))
-                hlh = r['how_long_would_be_opened_in_string'];
-                print(hlh)
+                # hlh = r['how_long_would_be_opened_in_string'];
+                for key, r in json_res.items():
+                    hlh = r['how_long_would_be_opened_in_string'];
+                    if hlh != None:
+                        break
                 if hlh != None:
                     if time:
                         self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (%s)" % (round(r['distance'], 2), r['address'], hlh, r['time']))
                     else:
                         self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours." % (round(r['distance'], 2), r['address'], hlh))
                 else:
-                    self.send_reply(client_type, client_id, "Hello! The nearest free food is already closed");
+                    self.send_reply(client_type, client_id, "Hello! The free food is not found nearby.");
             else:
                 print('OK-NG')
                 self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % locations)
