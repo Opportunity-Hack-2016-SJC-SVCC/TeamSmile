@@ -42,7 +42,8 @@
         </activity>
 
         <activity android:name=".FoodSourceDetails"
-            android:parentActivityName=".FreeFood"/>
+            android:parentActivityName=".FreeFood"
+            android:label="Loading..." />
 
     </application>
 
