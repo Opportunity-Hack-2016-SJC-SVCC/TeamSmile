@@ -5,13 +5,20 @@ from rest_framework import permissions
 from rest_framework.response import Response
 
 from smile_api.models import FoodSource
-from smile_api.serializers import FoodSourceSerializer
+from smile_api.serializers import FoodSourceSerializer, UpdateFoodSourceSerializer
 
 
 class FoodSourceVeiwSet(viewsets.ModelViewSet):
     queryset = FoodSource.objects.all()
     serializer_class = FoodSourceSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+
+        if self.request.method == 'PUT':
+            return UpdateFoodSourceSerializer
+
+        return super(FoodSourceVeiwSet, self).get_serializer_class()
 
     def list(self, request, *args, **kwargs):
         queryset = FoodSource.objects.all()

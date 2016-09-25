@@ -104,6 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+JWT_AUTH = {
+    'JWT_VERIFY_EXPIRATION': False,
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
