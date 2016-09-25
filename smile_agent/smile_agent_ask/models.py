@@ -9,7 +9,7 @@ class Interpreter(models.Model):
         managed = False
 
     time = models.TextField(blank=True, null=True)
-    number = models.IntegerField(blank=True, null=True)
+    number = models.TextField(blank=True, null=True)
     locations = models.TextField(blank=True, null=True)
     protocol = models.TextField(blank=True, null=True)
     subservices = models.TextField(blank=True, null=True)
