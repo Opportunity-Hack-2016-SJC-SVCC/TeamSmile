@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Interpreter
 import requests
 import json
+import time as time_lib
 
 
 class InterpreterSerializer(serializers.ModelSerializer):
@@ -68,13 +69,14 @@ class InterpreterSerializer(serializers.ModelSerializer):
                 # print(r)
                 # self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is . Open a further  hours. ()" % (round(r['distance'], 2)))
                 # hlh = r['how_long_would_be_opened_in_string'];
+                flag = 0
                 for key, r in json_res.items():
                     hlh = r['how_long_would_be_opened_in_string'];
                     if hlh != None:
-                        break
-                if hlh != None:
-                    self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (by %s, Tel:%s)" % (round(r['distance'], 2), r['address'], hlh, r['name'], r['phone']))
-                else:
+                        flag = 1
+                        self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (by %s, Tel:%s)" % (round(r['distance'], 2), r['address'], hlh, r['name'], r['phone']))
+                        time_lib.sleep(1)
+                if flag != 1:
                     self.send_reply(client_type, client_id, "Hello! The free food is not found nearby.");
             else:
                 print('OK-NG')
