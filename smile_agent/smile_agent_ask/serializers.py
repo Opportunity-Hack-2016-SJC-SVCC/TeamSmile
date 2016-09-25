@@ -14,18 +14,18 @@ class InterpreterSerializer(serializers.Serializer):
         print(message)
         if client_type.lower() == 'telegram':
             print('telegram', client_id, message)
-            send_request = 'http://localhost:5000/telegram_center/post'  # TODO
+            send_request = 'http://localhost:5000/telegram_center/post'  # TODO Hardcoded!
             requests.post(send_request, data=json.dumps({'userid': client_id, 'message': message}))
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
         elif client_type.lower() == 'sms':
             print('sms', client_id, message)
-            send_request = 'http://139.59.210.181:8081/sms'  # TODO
+            send_request = 'http://139.59.210.181:8081/sms'  # TODO Hardcoded!
             requests.post(send_request, data=json.dumps({'number': client_id, 'message': message}))
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
 
     def create(self, validated_data):
         print(validated_data)
-        validated_data = {'protocol':'SMS', 'number':'num1', 'time':'time1', 'service':'sv1', 'subservice':'subsv1', 'locations':['sanjose']}
+        # validated_data = {'protocol':'SMS', 'number':'num1', 'time':'time1', 'service':'sv1', 'subservice':'subsv1', 'locations':['sanjose']}
         if not validated_data:
             print('Error: POST-data is empty')
             return True
@@ -59,7 +59,7 @@ class InterpreterSerializer(serializers.Serializer):
                     json_res = json.loads(res)
                     r = json_res['0']
                     self.send_reply(client_type, client_id, ("Hello! The nearest free food is in %s miles(?). "
-                                                             "There is %s. Open a further %s hours." % (r['distance'], r['address'], "TIME")))
+                                                             "There is %s. Open a further %s hours." % (r['distance'], r['address'], r['how_long_would_be_opened_in_string'])))
                 else:
                     print('OK-NG')
                     self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % location)
