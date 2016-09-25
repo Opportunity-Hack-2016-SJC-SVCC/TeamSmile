@@ -13,13 +13,14 @@ class InterpreterSerializer(serializers.Serializer):
         # Using Telegram API?, send result to a client.
         print(message)
         if client_type.lower() == 'telegram':
-            print('telegram')
-            # TODO
+            print('telegram', client_id, message)
+            send_request = 'http://localhost:5000/telegram_center/post'  # TODO
+            requests.post(send_request, data=json.dumps({'userid': client_id, 'message': message}))
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
         elif client_type.lower() == 'sms':
-            print('sms')
-            send_request = 'http://139.59.210.181:8081/sms'
-            requests.post(send_request, data={'number': client_id, 'message': message})
+            print('sms', client_id, message)
+            send_request = 'http://139.59.210.181:8081/sms'  # TODO
+            requests.post(send_request, data=json.dumps({'number': client_id, 'message': message}))
             # send_request = 'http://139.59.212.15:3045/api/uid/%s/%s' % (client_data[0], place_request_message)
 
     def create(self, validated_data):
