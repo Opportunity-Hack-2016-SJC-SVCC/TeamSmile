@@ -79,6 +79,8 @@ public class FoodSourceDetails extends AppCompatActivity {
 
                             mSlotsRecyclerView.setAdapter(mSlotsAdapter);
                             mSlotsAdapter.notifyDataSetChanged();
+
+                            FoodSourceDetails.this.setTitle(foodSource.getName());
                         }
                     });
                 }
