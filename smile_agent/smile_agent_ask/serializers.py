@@ -13,7 +13,7 @@ class InterpreterSerializer(serializers.ModelSerializer):
         # Using Telegram API?, send result to a client.
         if client_type.lower() == 'telegram':
             print('telegram', client_id, message)
-            send_request = 'http://localhost:5000/telegram_center/post'  # TODO Hardcoded!
+            send_request = 'http://139.59.210.181:5000/telegram_center/post'  # TODO Hardcoded!
             requests.post(send_request, data=json.dumps({'userid': client_id, 'message': message}),
                           headers={'content-type': 'application/json'})
         elif client_type.lower() == 'sms':
