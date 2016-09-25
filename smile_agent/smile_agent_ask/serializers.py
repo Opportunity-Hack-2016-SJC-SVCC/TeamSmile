@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Interpreter
 import requests
 import json
+import time as time_lib
 
 
 class InterpreterSerializer(serializers.ModelSerializer):
@@ -43,7 +44,7 @@ class InterpreterSerializer(serializers.ModelSerializer):
         # subservices = d.get('subservices')
         # locations = d.get('locations')
 
-        if not (client_type and client_id and time and service and subservices):
+        if not (client_type and client_id and service):
             print('Error: POST-data-value is empty')
             return super(InterpreterSerializer, self).create(validated_data)
 
@@ -64,11 +65,19 @@ class InterpreterSerializer(serializers.ModelSerializer):
                 db_result = requests.get(db_request)
                 res = db_result.content.decode("utf-8")
                 json_res = json.loads(res)
-                r = json_res['0']
-                self.send_reply(client_type, client_id, "Hello!");
-                self.send_reply(client_type, client_id, "The nearest free food is in %s miles." % round(r['distance'], 2))
-                self.send_reply(client_type, client_id, "There is %s." % r['address'])
-                self.send_reply(client_type, client_id, "Open a further %s hours. (%s)", (r['how_long_would_be_opened_in_string'], r['time']))
+                # r = json_res['0']
+                # print(r)
+                # self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is . Open a further  hours. ()" % (round(r['distance'], 2)))
+                # hlh = r['how_long_would_be_opened_in_string'];
+                flag = 0
+                for key, r in json_res.items():
+                    hlh = r['how_long_would_be_opened_in_string'];
+                    if hlh != None:
+                        flag = 1
+                        self.send_reply(client_type, client_id, "Hello! The nearest free food is in %s miles. There is %s. Open a further %s hours. (by %s, Tel:%s)" % (round(r['distance'], 2), r['address'], hlh, r['name'], r['phone']))
+                        time_lib.sleep(1)
+                if flag != 1:
+                    self.send_reply(client_type, client_id, "Hello! The free food is not found nearby.");
             else:
                 print('OK-NG')
                 self.send_reply(client_type, client_id, "[%s] is ambiguous. Please send again with more clear address." % locations)

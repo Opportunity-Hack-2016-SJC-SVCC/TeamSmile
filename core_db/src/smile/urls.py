@@ -17,7 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 
+from rest_framework_jwt.views import obtain_jwt_token
+
+
 urlpatterns = [
-    url(r'api/', include('smile_api.urls')),
+    url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^api/', include('smile_api.urls')),
     url(r'^admin/', admin.site.urls),
 ]
