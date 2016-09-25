@@ -11,7 +11,7 @@ account_sid = "ACf66468a5a451f273e063e5a7740e28a9"
 auth_token = "0d25d41f3ed6d99e83552e630a483934"
 client = TwilioRestClient(account_sid, auth_token)
 
-app = web.application(urls, globals(),port=8081)
+app = web.application(urls, globals())
 class interpret_request:
     def POST(self):
       data = json.loads(web.data())
