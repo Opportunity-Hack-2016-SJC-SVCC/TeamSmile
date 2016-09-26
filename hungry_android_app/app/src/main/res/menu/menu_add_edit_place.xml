@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.dreamerspillow.ediary.Attivita.DatiClasse">
+
+    <item android:id="@+id/refresh"
+        android:title="Refresh"
+        android:icon="@drawable/ic_action_autorenew"
+        android:orderInCategory="1"
+        app:showAsAction="always" />
+
+</menu>

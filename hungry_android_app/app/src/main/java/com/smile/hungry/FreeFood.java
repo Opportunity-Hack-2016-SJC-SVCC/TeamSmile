@@ -9,9 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -26,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,7 @@ import java.util.Objects;
 
 import static com.smile.hungry.Utils.readUrl;
 
-public class FreeFood extends FragmentActivity implements OnMapReadyCallback {
+public class FreeFood extends AppCompatActivity implements OnMapReadyCallback {
     private final static String TAG = FreeFood.class.getSimpleName();
 
     private final static int MY_LOCATION_REQUEST_CODE = 1;
@@ -54,67 +56,67 @@ public class FreeFood extends FragmentActivity implements OnMapReadyCallback {
 
         foodSourcesIds = new HashMap<>();
 
-        Thread thread = new Thread(new Runnable() {
-            String jsonData = "";
-
-            @Override
-            public void run() {
-                try {
-                    jsonData = readUrl("http://139.59.212.15:3045/api/food_source/?format=json");
-                    Gson gson = new Gson();
-
-                    Type listType = new TypeToken<List<FoodSource>>() {}.getType();
-                    final List<FoodSource> foodSources = new Gson().fromJson(jsonData, listType);
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (FoodSource foodSource : foodSources) {
-                                final LatLng city = new LatLng(foodSource.getLongitude(), foodSource.getLatitude());
-                                Marker marker = mMap.addMarker(new MarkerOptions().position(city).title(foodSource.getName())
-                                        .snippet(foodSource.getDescription().
-                                                substring(0, Math.min(foodSource.getDescription().length(), 32))));
-                                foodSourcesIds.put(marker, foodSource.getId());
-                            }
-                        }
-                    });
-                }
-
-                catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(FreeFood.this, "There was some connection problem. " +
-                                    "Please try again later",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
+        Thread thread = new Thread(refreshing);
         thread.start();
     }
+
+    private Runnable refreshing = new Runnable() {
+        String jsonData = "";
+
+        @Override
+        public void run() {
+            try {
+                jsonData = readUrl("http://139.59.212.15:3045/api/food_source/?format=json");
+                Gson gson = new Gson();
+
+                Type listType = new TypeToken<List<FoodSource>>() {}.getType();
+                final List<FoodSource> foodSources = new Gson().fromJson(jsonData, listType);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (FoodSource foodSource : foodSources) {
+                            final LatLng city = new LatLng(foodSource.getLongitude(), foodSource.getLatitude());
+                            Marker marker = mMap.addMarker(new MarkerOptions().position(city).title(foodSource.getName())
+                                    .snippet(foodSource.getDescription().
+                                            substring(0, Math.min(foodSource.getDescription().length(), 32))));
+                            foodSourcesIds.put(marker, foodSource.getId());
+                        }
+                    }
+                });
+            }
+
+            catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(FreeFood.this, "There was some connection problem. " +
+                                "Please try again later",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     @Override
     protected void onResume() {
         super.onResume();
     }
 
-    public static boolean isLocationEnabled(Context context) {
-        int locationMode = 0;
-        String locationProviders;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_edit_place, menu);
+        return true;
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            try {
-                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-
-        } else {
-            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-            return !TextUtils.isEmpty(locationProviders);
+        // We don't want the parent activity to be recreated
+        if (id == R.id.refresh) {
+            mMap.clear();
+            new Thread(refreshing).start();
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
